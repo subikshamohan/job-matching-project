@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Skill Extractor & Job Scraper</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Resume Skill Extractor & Job Scraper</h2>
+        
+        <!-- Upload Resume Form -->
+        <form action="/upload" method="post" enctype="multipart/form-data" class="mt-4">
+            <label for="resume" class="form-label">Upload Resume (PDF/DOCX/TXT):</label>
+            <input type="file" name="resume" class="form-control mb-2" required>
+            <button type="submit" class="btn btn-primary">Extract Skills</button>
+        </form>
+        
+        <hr>
+        
+        <!-- Job Scraper Form -->
+        <form action="/scrape_jobs" method="post" class="mt-4">
+            <div class="mb-3">
+                <label for="job_role" class="form-label">Job Role:</label>
+                <input type="text" name="job_role" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="location" class="form-label">Location:</label>
+                <input type="text" name="location" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-success">Scrape LinkedIn Jobs</button>
+        </form>
+        
+        {% if skills %}
+        <hr>
+        <h3>Extracted Skills & Match Score:</h3>
+        <ul class="list-group">
+            {% for skill, score in skills.items() %}
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>{{ skill }}</span>
+                    <span class="badge bg-info">Score: {{ score }}%</span>
+                </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if jobs %}
+        <hr>
+        <h3>Scraped Job Listings:</h3>
+        <ul class="list-group">
+            {% for job in jobs %}
+                <li class="list-group-item">
+                    <strong>{{ job.title }}</strong> - {{ job.company }} ({{ job.location }})
+                    <br>
+                    <a href="{{ job.link }}" target="_blank">View Job</a>
+                </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
